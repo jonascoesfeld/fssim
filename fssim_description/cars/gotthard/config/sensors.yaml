@@ -32,7 +32,7 @@ sensors:
     enabled: false
     topic: lidar/raw
     pos:
-      x: 0.75
+      x: 0.76 #0.75
       y: 0.0
       z: 0.15
 
