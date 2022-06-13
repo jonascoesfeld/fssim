@@ -45,7 +45,12 @@
 #include <tf/tf.h>
 #include <tf/transform_listener.h>
 
+//Util
+#include "util.hpp"
+
 namespace gazebo {
+
+using namespace std::chrono_literals;
 
 class ConeSensorModel {
  public:
@@ -199,6 +204,11 @@ class ConeSensorModel {
     tf::TransformListener listener_;
 
     bool loaded_sacesfully_;
+
+    // TODO Hier Zeitmessung eingetragen
+    std::chrono::seconds sensor_fall_out = static_cast<std::chrono::seconds >(util::rng(20, 40));
+
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>> start;
 };
 } // namespace gazebo
 

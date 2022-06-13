@@ -93,6 +93,7 @@ ConeSensorModel::ConeSensorModel(ros::NodeHandle &_node) :
     point_cloud_(),
     loaded_sacesfully_(false) {
     vehicle_frame_ = "/base_link";
+    start = std::chrono::high_resolution_clock::now();
 }
 
 bool ConeSensorModel::load(const physics::ModelPtr &model, const sdf::ElementPtr &_sdf) {
@@ -143,10 +144,16 @@ void ConeSensorModel::update() {
     std::vector<Eigen::Vector3d> left_around;
     std::vector<Eigen::Vector3d> right_around;
 
-    findObservedCones(pos, left_, config.observation_likelihood_left, config.likelihood_blue, point_cloud_, LEFT);
-    findObservedCones(pos, right_, config.observation_likelihood_right, config.likelihood_yellow, point_cloud_, RIGHT);
-    findObservedCones(pos, orange_, config.observation_likelihood_orange, config.likelihood_orange, point_cloud_,
-                      ORANGE);
+    // TODO Reicht das?
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>> now = std::chrono::high_resolution_clock::now();
+    if(now - start < sensor_fall_out) {
+      findObservedCones(pos, left_, config.observation_likelihood_left,
+                        config.likelihood_blue, point_cloud_, LEFT);
+      findObservedCones(pos, right_, config.observation_likelihood_right,
+                        config.likelihood_yellow, point_cloud_, RIGHT);
+      findObservedCones(pos, orange_, config.observation_likelihood_orange,
+                        config.likelihood_orange, point_cloud_, ORANGE);
+    }
 
     point_cloud_.header.frame_id = "fssim_map";
     point_cloud_.width           = 1;

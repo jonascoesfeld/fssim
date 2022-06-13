@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 #
 # AMZ-Driverless
 # Copyright (c) 2018 Authors:
